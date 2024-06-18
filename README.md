@@ -6,9 +6,12 @@ This repository offers a supervised-training code of FCN on all the subset datas
 The datasets are automatically downloaded when relevant codes are executed. They, also, can be manually downloaded [here](https://figshare.com/articles/dataset/UCR_Archive_2018/21359775).
 The trained FCN will be used to compute the FID (Fréchet Inception Distance) score for evaluation of generated time series.
 
-This repository is a part of our paper ["Vector Quantized Time Series Generation with a Bidirectional Prior Model", AISTATS 2023](https://arxiv.org/abs/2303.04743). There has been a lack of proper evaluation protocol to measure quality of generated samples in the time series generation (TSG) literature. 
-Traditionally, visual inspection of PCA and t-SNE mapping of generated samples have been used. In the paper, we propose to use Fréchet inception distance (FID) score and Inception Score (IS), following the evaluation protocol in computer vision. To compute the FID and IS, a pretrained classification model is needed. Unlike the computer vision field, there is no pretrained classification model for time series. Thus, we have trained the FCN models for all the UCR archive datasets and provide the pretrained FCN models here. 
-We hope that the follow-up papers in the TSG literature could be better compared with each other via the FID and IS-based evaluation protocol.
+The differences from its former version, [supervised-FCN](https://github.com/danelee2601/supervised-FCN), are the followings:
+* training and test datasets are re-created by merging the original training and test datasets and splitting it into 80% and 20% for a new training and test set with `StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=0)`.
+* the model is trained on the new training and test set.
+* a larger size of the model is used. Instead of the hidden sizes of (128, 256, 128), (128, 256, 256, 256, 256, 128) is now used with Dropout layers in between.
+
+This repository is a part of our paper ["..."](). 
 
 
 # `pip` installation
