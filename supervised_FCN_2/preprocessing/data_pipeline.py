@@ -1,26 +1,26 @@
 from torch.utils.data import DataLoader
 
-from supervised_FCN.preprocessing.preprocess_ucr import DatasetImporterUCR, UCRDataset
-from supervised_FCN.preprocessing.preprocess_uea import DatasetImporterUEA, UEADataset
-from supervised_FCN.preprocessing.augmentations import Augmentations
+from supervised_FCN_2.preprocessing.preprocess_ucr import DatasetImporterUCR, UCRDataset
+from supervised_FCN_2.preprocessing.preprocess_uea import DatasetImporterUEA, UEADataset
+from supervised_FCN_2.preprocessing.augmentations import Augmentations
 
 
-def build_data_pipeline(config: dict, kind: str) -> (DataLoader, DataLoader, DataLoader):
+def build_data_pipeline(archive_name:str, dataset_name:str, config: dict, kind: str):
     """
     :param config:
     :param kind train/valid/test
     """
     cf = config
-    dataset_name = cf['dataset']["name"]
+    # dataset_name = cf['dataset']["name"]
     batch_size = cf['dataset']["batch_size"]
     num_workers = cf['dataset']["num_workers"]
 
-    if dataset_name == "UCR":
-        dataset_importer = DatasetImporterUCR(**cf['dataset'])
+    if archive_name == "UCR":
+        dataset_importer = DatasetImporterUCR(subset_name=dataset_name, **cf['dataset'])
         Dataset = UCRDataset
 
-    elif dataset_name == 'UEA':
-        dataset_importer = DatasetImporterUEA(**cf['dataset'])
+    elif archive_name == 'UEA':
+        dataset_importer = DatasetImporterUEA(subset_name=dataset_name, **cf['dataset'])
         Dataset = UEADataset
     else:
         raise ValueError("invalid `dataset_name`.")

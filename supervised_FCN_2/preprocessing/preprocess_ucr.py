@@ -10,7 +10,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from torch.utils.data import Dataset
 from sklearn.preprocessing import LabelEncoder
 
-from supervised_FCN.utils import get_root_dir
+from supervised_FCN_2.utils import get_root_dir
 
 
 class DatasetImporterUCR(object):

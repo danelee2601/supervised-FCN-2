@@ -2,12 +2,12 @@ import torchmetrics
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from sklearn.metrics import accuracy_score
 
-from supervised_FCN.models.fcn import FCNBaseline
-from supervised_FCN.experiments.exp_base import *
-from supervised_FCN.utils import *
+from supervised_FCN_2.models.fcn import FCNBaseline
+from supervised_FCN_2.experiments.exp_base import *
+from supervised_FCN_2.utils import *
 
 
-class ExpFCN(ExpBase):
+class ExpFCN(pl.LightningModule):
     def __init__(self,
                  config: dict,
                  n_train_samples: int,
@@ -15,7 +15,6 @@ class ExpFCN(ExpBase):
                  ):
         super().__init__()
         self.config = config
-        self.T_max = config['trainer_params']['max_epochs'] * (np.ceil(n_train_samples / config['dataset']['batch_size']) + 1)
         in_channels = config['dataset']['in_channels']
 
         self.fcn = FCNBaseline(in_channels, n_classes)
@@ -38,7 +37,9 @@ class ExpFCN(ExpBase):
                              yhat.argmax(dim=-1).flatten().cpu().detach().numpy())
         loss_hist = {'loss': loss, 'acc': acc}
 
-        detach_the_unnecessary(loss_hist)
+        for k, v in loss_hist.items():
+            self.log(f'train/{k}', v)
+
         return loss_hist
 
     def validation_step(self, batch, batch_idx):
@@ -54,13 +55,15 @@ class ExpFCN(ExpBase):
                              yhat.argmax(dim=-1).flatten().cpu().detach().numpy())
         loss_hist = {'loss': loss, 'acc': acc}
 
-        detach_the_unnecessary(loss_hist)
+        for k, v in loss_hist.items():
+            self.log(f'val/{k}', v)
+
         return loss_hist
 
     def configure_optimizers(self):
-        opt = torch.optim.AdamW([{'params': self.fcn.parameters(), 'lr': self.config['exp_params']['LR']},
-                                 ], weight_decay=self.config['exp_params']['weight_decay'])
-        return {'optimizer': opt, 'lr_scheduler': CosineAnnealingLR(opt, self.T_max)}
+        opt = torch.optim.AdamW([{'params': self.parameters(), 'lr': self.config['exp_params']['LR']}], )
+        T_max = self.config['trainer_params']['max_steps']
+        return {'optimizer': opt, 'lr_scheduler': CosineAnnealingLR(opt, T_max, eta_min=0.000001)}
 
     def test_step(self, batch, batch_idx):
         x, y = batch
@@ -75,5 +78,7 @@ class ExpFCN(ExpBase):
                              yhat.argmax(dim=-1).flatten().cpu().detach().numpy())
         loss_hist = {'loss': loss, 'acc': acc}
 
-        detach_the_unnecessary(loss_hist)
+        for k, v in loss_hist.items():
+            self.log(f'val/{k}', v)
+
         return loss_hist

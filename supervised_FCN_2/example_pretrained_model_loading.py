@@ -8,8 +8,8 @@ import torch
 # import gdown
 import wget
 
-from supervised_FCN.models.fcn import FCNBaseline
-from supervised_FCN.utils import get_root_dir
+from supervised_FCN_2.models.fcn import FCNBaseline
+from supervised_FCN_2.utils import get_root_dir
 
 
 def load_pretrained_FCN(subset_dataset_name: str, in_channels: int = 1):
@@ -22,16 +22,16 @@ def load_pretrained_FCN(subset_dataset_name: str, in_channels: int = 1):
     pretrained_zip_fnames = [fname for fname in os.listdir(get_root_dir().joinpath('saved_models')) if '.zip' in fname]
     if len(pretrained_zip_fnames) == 0:
         temp_dir = Path(tempfile.gettempdir())
-        pretrained_zip_fnames = [fname for fname in os.listdir(temp_dir) if 'supervised-FCN-saved_models.zip' in fname]
+        pretrained_zip_fnames = [fname for fname in os.listdir(temp_dir) if 'supervised-FCN-2-saved_models.zip' in fname]
         zipped_pretrained_dirname = temp_dir
     else:
         zipped_pretrained_dirname = get_root_dir().joinpath('saved_models')
 
     # is_temp_dir = False
     if len(pretrained_zip_fnames) == 0:
-        url = "https://figshare.com/ndownloader/files/38378411"
+        url = "https://figshare.com/ndownloader/files/47212990"
         try:
-            zipped_pretrained_model_fname = str(zipped_pretrained_dirname.joinpath('supervised-FCN-saved_models.zip'))
+            zipped_pretrained_model_fname = str(zipped_pretrained_dirname.joinpath('supervised-FCN-2-saved_models.zip'))
             # gdown.download(url, zipped_pretrained_model_fname)
             wget.download(url, zipped_pretrained_model_fname)
             shutil.unpack_archive(zipped_pretrained_model_fname, extract_dir=zipped_pretrained_dirname)
@@ -41,7 +41,7 @@ def load_pretrained_FCN(subset_dataset_name: str, in_channels: int = 1):
             # zipped_pretrained_dirname = Path(temp_dir.name)
             temp_dir = tempfile.gettempdir()
             zipped_pretrained_dirname = Path(temp_dir)
-            zipped_pretrained_model_fname = str(zipped_pretrained_dirname.joinpath('supervised-FCN-saved_models.zip'))
+            zipped_pretrained_model_fname = str(zipped_pretrained_dirname.joinpath('supervised-FCN-2-saved_models.zip'))
             # gdown.download(url, zipped_pretrained_model_fname)
             wget.download(url, zipped_pretrained_model_fname)
             shutil.unpack_archive(zipped_pretrained_model_fname, extract_dir=zipped_pretrained_dirname)

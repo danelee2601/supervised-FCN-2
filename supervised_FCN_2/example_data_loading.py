@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
-from supervised_FCN.preprocessing.data_pipeline import build_data_pipeline
-from supervised_FCN.utils import get_root_dir, load_yaml_param_settings
+from supervised_FCN_2.preprocessing.data_pipeline import build_data_pipeline
+from supervised_FCN_2.utils import get_root_dir, load_yaml_param_settings
 
 
 def load_args():

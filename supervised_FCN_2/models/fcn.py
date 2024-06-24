@@ -62,7 +62,7 @@ class FCNBaseline(nn.Module):
         The number of output classes
     """
 
-    def __init__(self, in_channels: int, num_pred_classes: int = 1) -> None:
+    def __init__(self, in_channels: int, num_pred_classes: int = 1, dropout=0.5) -> None:
         super().__init__()
 
         # for easier saving and loading
@@ -72,9 +72,12 @@ class FCNBaseline(nn.Module):
         }
 
         self.layers = nn.Sequential(*[
-            ConvBlock(in_channels, 128, 8, 1),
-            ConvBlock(128, 256, 5, 1),
-            ConvBlock(256, 128, 3, 1),
+            ConvBlock(in_channels, 128, 8, 1), nn.Dropout(dropout),
+            ConvBlock(128, 256, 5, 1), nn.Dropout(dropout),
+            ConvBlock(256, 256, 5, 1), nn.Dropout(dropout),
+            ConvBlock(256, 256, 5, 1), nn.Dropout(dropout),
+            ConvBlock(256, 256, 5, 1), nn.Dropout(dropout),
+            ConvBlock(256, 128, 5, 1)
         ])
         self.final = nn.Linear(128, num_pred_classes)
 
