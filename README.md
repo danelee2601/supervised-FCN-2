@@ -16,12 +16,12 @@ This repository is a part of our paper ["..."]().
 
 # `pip` installation
 ```python
-pip install supervised-fcn
+pip install supervised-fcn-2
 ```
 
 # Load a Pretrained FCN 
 ```python
-from supervised_FCN.example_pretrained_model_loading import load_pretrained_FCN
+from _supervised_FCN_2_.example_pretrained_model_loading import load_pretrained_FCN
 
 subset_dataset_name = ...  # 'Adiac'
 fcn = load_pretrained_FCN(subset_dataset_name)
@@ -41,7 +41,7 @@ z = fcn(x, return_feature_vector=True)  # (batch_size, feature_dim)
 # Compute FID and IS
 ### FID
 ```python
-from supervised_FCN.example_compute_FID import calculate_fid
+from supervised_FCN_2.example_compute_FID import calculate_fid
 
 x_real = torch.rand((1, 1, 176))  # (batch_size, in_channels, length)
 x_fake = torch.rand((1, 1, 176))  # (batch_size, in_channels, length)
@@ -54,7 +54,7 @@ fid_score = calculate_fid(z_real.cpu().detach().numpy(), z_fake.cpu().detach().n
 
 ### IS
 ```python
-from supervised_FCN.example_compute_IS import calculate_inception_score
+from supervised_FCN_2.example_compute_IS import calculate_inception_score
 
 x = torch.rand((1, 1, 176))  # (batch_size, in_channels, length)
 out = fcn(x)  # (batch_size, n_classes); an output right before the softmax layer.
