@@ -4,3 +4,4 @@ dist/
 supervised_fcn.egg-info/
 
 wandb/
+*.egg-info

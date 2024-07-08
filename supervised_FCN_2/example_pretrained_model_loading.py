@@ -70,10 +70,10 @@ def load_pretrained_FCN(subset_dataset_name: str, in_channels: int = 1):
     if not os.path.isdir(temp_dir):
         os.mkdir(temp_dir)
 
-    # zipped_pretrained_dirname = temp_dir
     zipped_pretrained_model_fname = str(temp_dir.joinpath('supervised-FCN-2-saved_models.zip'))
-    wget.download(url, zipped_pretrained_model_fname)
-    shutil.unpack_archive(zipped_pretrained_model_fname, extract_dir=temp_dir)
+    if not os.path.isfile(zipped_pretrained_model_fname):
+        wget.download(url, zipped_pretrained_model_fname)
+        shutil.unpack_archive(zipped_pretrained_model_fname, extract_dir=temp_dir)
 
     ucr_summary = pd.read_csv(get_root_dir().joinpath('datasets', 'DataSummary_UCR.csv'))
     q = ucr_summary.query(f"Name == '{subset_dataset_name}'")
